@@ -1,0 +1,170 @@
+---
+title: 'Problem Set #1'
+author: "Cian Stryker"
+date: "9/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(sf)
+library(AER)
+
+```
+
+# Conceptual Questions
+<br> 
+<br> 
+
+
+### Question 1
+
+a.) 
+
+b.)
+
+c.)
+
+<br> 
+
+### Question 2
+
+a.)
+
+b.)
+
+c.)
+
+d.)
+
+<br> 
+
+### Question 3
+
+
+<br> 
+<br> 
+
+
+# Data Questions
+
+<br> 
+<br> 
+
+### Question 1
+
+```{r Setup }
+
+data(CASchools)
+
+data <- CASchools
+
+```
+
+```{r Question 1}
+
+q1 <- nrow(data)
+```
+
+1.) There are `r q1` observations in the dataset. 
+
+<br>
+
+```{r Question 2}
+
+q2 <- ncol(data)
+```
+
+2.) There are `r q2` variables in the dataset.
+
+<br>
+
+```{r Question 3}
+
+ q3 <- sapply(data, class)
+```
+
+3.) None of the columns are categorical. 
+
+<br>
+
+```{r Question 4}
+
+data_na_check <- data %>%
+  drop_na()
+
+```
+
+4.) There are no missing values. 
+
+<br>
+
+```{r Question 5}
+
+q5_1 <- data %>%
+  select(students) %>%
+  summarize(x = mean(students))
+
+q5 <- format(round(q5_1, 2), nsmall = 2)
+```
+
+5.) The mean number of students is `r q5`. 
+
+<br>
+
+```{r Question 6}
+
+q6_1 <- data %>%
+  select(computer) %>%
+  summarize(x = sd(computer))
+
+q6 <- format(round(q6_1, 2), nsmall = 2)
+
+```
+
+6.) The standard deviation of the number of computers is `r q6`. 
+
+<br>
+
+7.) Calworks means the percent of stuents who qualify for Calworks or income assistance. 
+
+<br>
+
+```{r Question 8}
+
+q8_1 <- data %>%
+  filter(students > 500) %>%
+  nrow()
+
+q8 <- q1 - q8_1
+
+```
+
+8.) `r q8` observations would be dropped if you limit the sample to schools with 500+ students. 
+
+<br>
+
+```{r Data Sorting}
+
+test <- data %>%
+  arrange(students) %>%
+  head(80) %>%
+  select(students, teachers, calworks, lunch, computer, expenditure, income, english, read)
+
+training <- data %>%
+  arrange(desc(students)) %>%
+  head(200) %>%
+  select(students, teachers, calworks, lunch, computer, expenditure, income, english, read)
+
+```
+
+9.) An issue with splitting the data this way is that your training data is using only large schools while your test data is largley using small schools. Smaller schools and larger schools tend to differ from eachother within a few categories. For example, small schools within urban centers are often private schools with radically different socio-economic levels and demographics than larger urban schools. Small schools could also be rural schools that also differ strongly from the typical large school that is urban. Splitting the data based on student size and making the test use small student bodies while the training data uses large student bodies may negativley impact how well an algorithm will be able to translate to the test data because of these differences. 
+
+<br>
+
+```{r Question 10}
+
+```
+
