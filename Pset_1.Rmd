@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
 library(sf)
+library(purrr)
 library(AER)
 
 ```
@@ -165,6 +166,59 @@ training <- data %>%
 <br>
 
 ```{r Question 10}
+
+model_1 <- lm(data = training, read ~ students + teachers + calworks + lunch + computer + expenditure + income + english)
+
+model_2 <- lm(data = test, formula = model_1)
+
+q10 <- mean(model_2$residuals^2)
+
+q10 <- format(round(q10, 2), nsmall = 2)
+
+```
+
+10.) The Mean Squared Error for the test data using the linear model from the training data is `r q10`. 
+
+<br>
+
+11.) The coefficient on computers is 0.02.
+
+```{r Question 11}
+
+model_3 <- lm(data = training, read ~ students + teachers + computer)
+
+q11_1 <- model_3$coefficients
+
+q11 <- format(round(q11_1, 2), nsmall = 2)
+
+q11
+
+```
+
+
+<br>
+
+12.) 
+
+```{r Question 12}
+
+model_4 <- lm(data = training, read ~ students + teachers + income + computer)
+
+q12_1 <- model_4$coefficients
+
+q12 <- format(round(q12_1, 2), nsmall = 2)
+
+q12
+```
+
+
+a.) The coefficient on computers is now 0.01. 
+
+b.) This implies that reading scores has a postiive correlation with income and that computer scores and income are closely correlated to eachother as well. In adding income as a varible to the model, the effect size of computer decreased, which suggests that income captures some of computer's effect. 
+
+<br>
+
+```{r Question 13}
 
 ```
 
