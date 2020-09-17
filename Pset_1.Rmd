@@ -8,15 +8,19 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
+# Loading all packages.
+
 library(tidyverse)
 library(sf)
-library(purrr)
+library(class)
 library(AER)
+library(FNN)
+
+
 
 ```
 
 # Conceptual Questions
-<br> 
 <br> 
 
 
@@ -32,13 +36,13 @@ c.)
 
 ### Question 2
 
-a.)
+a.) False
 
 b.)
 
 c.)
 
-d.)
+d.) False
 
 <br> 
 
@@ -52,11 +56,10 @@ d.)
 # Data Questions
 
 <br> 
-<br> 
-
-### Question 1
 
 ```{r Setup }
+
+# Loading in the data and renaming. 
 
 data(CASchools)
 
@@ -65,6 +68,8 @@ data <- CASchools
 ```
 
 ```{r Question 1}
+
+# Check number of observations. 
 
 q1 <- nrow(data)
 ```
@@ -75,6 +80,8 @@ q1 <- nrow(data)
 
 ```{r Question 2}
 
+# Check variables. 
+
 q2 <- ncol(data)
 ```
 
@@ -84,6 +91,8 @@ q2 <- ncol(data)
 
 ```{r Question 3}
 
+# Quick check to see if anything is categorical. 
+
  q3 <- sapply(data, class)
 ```
 
@@ -92,6 +101,9 @@ q2 <- ncol(data)
 <br>
 
 ```{r Question 4}
+
+# Just dropped the NAs and saw that the number of 
+# observations did not change. 
 
 data_na_check <- data %>%
   drop_na()
@@ -103,6 +115,9 @@ data_na_check <- data %>%
 <br>
 
 ```{r Question 5}
+
+# Created a subset to grab just students and cacluate
+# the mean. Then I formatted it to two decimal points. 
 
 q5_1 <- data %>%
   select(students) %>%
@@ -116,6 +131,9 @@ q5 <- format(round(q5_1, 2), nsmall = 2)
 <br>
 
 ```{r Question 6}
+
+# Subsetted for computer, cacculated standard deviation
+# and then formatted. 
 
 q6_1 <- data %>%
   select(computer) %>%
@@ -135,6 +153,10 @@ q6 <- format(round(q6_1, 2), nsmall = 2)
 
 ```{r Question 8}
 
+# Subsetted and removed all observations below 500 students
+# then I took the number of observations and subtracted the  
+# it from the total in q2.  
+
 q8_1 <- data %>%
   filter(students > 500) %>%
   nrow()
@@ -148,6 +170,9 @@ q8 <- q1 - q8_1
 <br>
 
 ```{r Data Sorting}
+
+# Cleaning up the data and splitting it between test and training
+# data following the instructions of the pset. 
 
 test <- data %>%
   arrange(students) %>%
@@ -167,13 +192,16 @@ training <- data %>%
 
 ```{r Question 10}
 
+# Ran a standard linear regression per the instructions and then
+# ran that result on the test data. 
+
 model_1 <- lm(data = training, read ~ students + teachers + calworks + lunch + computer + expenditure + income + english)
 
-model_2 <- lm(data = test, formula = model_1)
+prediction_model_1 <- predict(model_1, test[,-9])
 
-q10 <- mean(model_2$residuals^2)
+MSE_model_1 <- mean((prediction_model_1 - test[,9])^2)
 
-q10 <- format(round(q10, 2), nsmall = 2)
+q10 <- format(round(MSE_model_1, 2), nsmall = 2)
 
 ```
 
@@ -184,6 +212,9 @@ q10 <- format(round(q10, 2), nsmall = 2)
 11.) The coefficient on computers is 0.02.
 
 ```{r Question 11}
+
+# Ran another linear regression, grabbed the coefficients and 
+# then formatted the results. 
 
 model_3 <- lm(data = training, read ~ students + teachers + computer)
 
@@ -202,6 +233,8 @@ q11
 
 ```{r Question 12}
 
+# Yet another linear regression with formatting. 
+
 model_4 <- lm(data = training, read ~ students + teachers + income + computer)
 
 q12_1 <- model_4$coefficients
@@ -218,7 +251,30 @@ b.) This implies that reading scores has a postiive correlation with income and 
 
 <br>
 
+
 ```{r Question 13}
+
+knn_reg_1 <- knn.reg(training, test, training[,9], k = 5)
+
+mse_knn_1 <- mean((knn_reg_1$pred - test[,9])^2)
+
+q13 <- format(round(mse_knn_1, 2), nsmall = 2)
 
 ```
 
+13.) The Mean Squared Error on the test data with k = 5 is `r q13`.
+
+<br>
+
+
+```{r Question 14}
+
+knn_reg_2 <- knn.reg(training, test, training[,9], k = 10)
+
+mse_knn_2 <- mean((knn_reg_2$pred - test[,9])^2)
+
+q14 <- format(round(mse_knn_2, 2), nsmall = 2)
+
+```
+
+14.) The Mean Squared Error on the test data with k = 10 is `r q14`.
