@@ -1,55 +1,57 @@
 ---
 title: 'Problem Set #1'
+subtitle: 'API 222A: Machine Learning and Big Data Analytics'
 author: "Cian Stryker"
 date: "9/15/2020"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
-# Loading all packages.
+# Loading all packages and setting working directory. 
 
 library(tidyverse)
-library(sf)
 library(class)
 library(AER)
 library(FNN)
 
-
-
+setwd("C:/Users/cians/Desktop/Machine Learning/Machine_Learning_Pset_1")
 ```
 
 # Conceptual Questions
-<br> 
 
 
-### Question 1
+#### Question 1
 
-a.) 
+\hfill\break
 
-b.)
 
-c.)
+a.) This is a classification question and we are interested in prediction.
 
-<br> 
+b.) This is a regression question and we are interested in prediction. 
 
-### Question 2
+c.) This is a regression question and we are interested in inference.  
+
+
+#### Question 2
+
+\hfill\break
+
 
 a.) False
 
-b.)
+b.) False
 
-c.)
+c.) True 
 
 d.) False
 
-<br> 
 
-### Question 3
+#### Question 3
 
+Models that use few parameters typically have high bias and low variance, but models with many parameters typically have low bias and high variance. A good model typically finds a balance between bias and variance in order to minimize total error. 
 
-<br> 
 <br> 
 
 
@@ -74,7 +76,7 @@ data <- CASchools
 q1 <- nrow(data)
 ```
 
-1.) There are `r q1` observations in the dataset. 
+1.) There are `r q1` observations in the data set. 
 
 <br>
 
@@ -85,7 +87,7 @@ q1 <- nrow(data)
 q2 <- ncol(data)
 ```
 
-2.) There are `r q2` variables in the dataset.
+2.) There are `r q2` variables in the data set.
 
 <br>
 
@@ -147,7 +149,7 @@ q6 <- format(round(q6_1, 2), nsmall = 2)
 
 <br>
 
-7.) Calworks means the percent of stuents who qualify for Calworks or income assistance. 
+7.) Calworks means the percent of stunts who qualify for Calworks or income assistance. 
 
 <br>
 
@@ -186,7 +188,7 @@ training <- data %>%
 
 ```
 
-9.) An issue with splitting the data this way is that your training data is using only large schools while your test data is largley using small schools. Smaller schools and larger schools tend to differ from eachother within a few categories. For example, small schools within urban centers are often private schools with radically different socio-economic levels and demographics than larger urban schools. Small schools could also be rural schools that also differ strongly from the typical large school that is urban. Splitting the data based on student size and making the test use small student bodies while the training data uses large student bodies may negativley impact how well an algorithm will be able to translate to the test data because of these differences. 
+9.) An issue with splitting the data this way is that your training data is using only large schools while your test data is largely using small schools. Smaller schools and larger schools tend to differ from each other within a few categories. For example, small schools within urban centers are often private schools with radically different socio-economic levels and demographics than larger urban schools. Small schools could also be rural schools that also differ strongly from the typical large school that is urban. Splitting the data based on student size and making the test use small student bodies while the training data uses large student bodies may negatively impact how well an algorithm will be able to translate to the test data because of these differences. 
 
 <br>
 
@@ -207,9 +209,10 @@ q10 <- format(round(MSE_model_1, 2), nsmall = 2)
 
 10.) The Mean Squared Error for the test data using the linear model from the training data is `r q10`. 
 
-<br>
+\hfill\break
 
-11.) The coefficient on computers is 0.02.
+
+11.) 
 
 ```{r Question 11}
 
@@ -226,8 +229,10 @@ q11
 
 ```
 
+The coefficient on computers is 0.02.
 
-<br>
+\hfill\break
+
 
 12.) 
 
@@ -247,9 +252,9 @@ q12
 
 a.) The coefficient on computers is now 0.01. 
 
-b.) This implies that reading scores has a postiive correlation with income and that computer scores and income are closely correlated to eachother as well. In adding income as a varible to the model, the effect size of computer decreased, which suggests that income captures some of computer's effect. 
+b.) This implies that reading scores has a positive correlation with income and that computer scores and income are closely correlated to each other as well. In adding income as a variable to the model, the effect size of computer decreased, which suggests that income captures some of computer's effect. 
 
-<br>
+\hfill\break
 
 
 ```{r Question 13}
@@ -263,8 +268,6 @@ q13 <- format(round(mse_knn_1, 2), nsmall = 2)
 ```
 
 13.) The Mean Squared Error on the test data with k = 5 is `r q13`.
-
-<br>
 
 
 ```{r Question 14}
