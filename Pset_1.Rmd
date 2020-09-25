@@ -31,7 +31,7 @@ a.) This is a classification question and we are interested in prediction.
 
 b.) This is a regression question and we are interested in prediction. 
 
-c.) This is a regression question and we are interested in inference.  
+c.) This is a classification question and we are interested in inference.  
 
 
 #### Question 2
@@ -98,7 +98,7 @@ q2 <- ncol(data)
  q3 <- sapply(data, class)
 ```
 
-3.) None of the columns are categorical. 
+3.) Four of the columns are categorical: District, School, Country, and Grades.
 
 <br>
 
@@ -160,7 +160,7 @@ q6 <- format(round(q6_1, 2), nsmall = 2)
 # it from the total in q2.  
 
 q8_1 <- data %>%
-  filter(students > 500) %>%
+  filter(students >= 500) %>%
   nrow()
 
 q8 <- q1 - q8_1
@@ -188,7 +188,7 @@ training <- data %>%
 
 ```
 
-9.) An issue with splitting the data this way is that your training data is using only large schools while your test data is largely using small schools. Smaller schools and larger schools tend to differ from each other within a few categories. For example, small schools within urban centers are often private schools with radically different socio-economic levels and demographics than larger urban schools. Small schools could also be rural schools that also differ strongly from the typical large school that is urban. Splitting the data based on student size and making the test use small student bodies while the training data uses large student bodies may negatively impact how well an algorithm will be able to translate to the test data because of these differences. 
+9.) An issue with splitting the data this way is that your training data is using only large schools while your test data is largely using small schools. Smaller schools and larger schools tend to differ from each other within a few categories. For example, small schools within urban centers are often private schools with radically different socio-economic levels and demographics than larger urban schools. Small schools could also be rural schools that also differ strongly from the typical large school that is urban. Splitting the data based on student size and making the test use small student bodies while the training data uses large student bodies may negatively impact how well an algorithm will be able to translate to the test data because of these differences. Also, in general, you should randomize the process when you split your data into training and test subsets. 
 
 <br>
 
@@ -207,6 +207,7 @@ q10 <- format(round(MSE_model_1, 2), nsmall = 2)
 
 ```
 
+
 10.) The Mean Squared Error for the test data using the linear model from the training data is `r q10`. 
 
 \hfill\break
@@ -215,6 +216,8 @@ q10 <- format(round(MSE_model_1, 2), nsmall = 2)
 11.) 
 
 ```{r Question 11}
+
+set.seed(99)
 
 # Ran another linear regression, grabbed the coefficients and 
 # then formatted the results. 
@@ -238,6 +241,8 @@ The coefficient on computers is 0.02.
 
 ```{r Question 12}
 
+set.seed(99)
+
 # Yet another linear regression with formatting. 
 
 model_4 <- lm(data = training, read ~ students + teachers + income + computer)
@@ -252,14 +257,19 @@ q12
 
 a.) The coefficient on computers is now 0.01. 
 
-b.) This implies that reading scores has a positive correlation with income and that computer scores and income are closely correlated to each other as well. In adding income as a variable to the model, the effect size of computer decreased, which suggests that income captures some of computer's effect. 
+b.) This implies that reading scores has a positive correlation with income and that computer scores and income are closely correlated to each other as well. A one unit increase in computer causes a 0.01 increase in reading level, when income is added as a variable. In adding income as a variable to the model, the effect size of computer decreased, which suggests that income captures some of computer's effect. Income has a coefficient of 2.17, which means that for a unit increase in income, reading increases by 2.17. Income has a stronger positive effect on reading than computer does and likely income accounts for some of computer's effect on reading that was attributed to computer in the previous model. When taking income into account, computer's effect decreases. 
 
 \hfill\break
 
 
 ```{r Question 13}
 
-knn_reg_1 <- knn.reg(training, test, training[,9], k = 5)
+set.seed(99)
+
+knn_reg_1 <- knn.reg(training[,-9],
+                     test[,-9],
+                     training[,9], 
+                     k = 5)
 
 mse_knn_1 <- mean((knn_reg_1$pred - test[,9])^2)
 
@@ -272,7 +282,12 @@ q13 <- format(round(mse_knn_1, 2), nsmall = 2)
 
 ```{r Question 14}
 
-knn_reg_2 <- knn.reg(training, test, training[,9], k = 10)
+set.seed(99)
+
+knn_reg_2 <- knn.reg(training[,-9],
+                     test[,-9],
+                     training[,9],
+                     k = 10)
 
 mse_knn_2 <- mean((knn_reg_2$pred - test[,9])^2)
 
